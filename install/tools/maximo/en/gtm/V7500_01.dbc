@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script SYSTEM "script.dtd">
+<script author="amahen" scriptname="GTM Meta-Data">
+  <description>Configures the GTM Mbos, Tables and Columns</description>
+  <statements>
+  
+	<add_service  servicename="GTM" description="Global Trade Management" classname="biz.gbat.tivoli.gtm.server.GTMService" />
+  
+    <!-- Create the ECCNs table -->
+    <define_table persistent="true" type="system" object="ECCN" description="Export Control Classification Numbers" service="GTM" classname="biz.gbat.tivoli.gtm.mbos.ECCNSet" mainobject="true" internal="false" primarykey="ECCN" >
+      <attrdef attribute="ECCN" maxtype="UPPER" title="Export Control Classification Number" remarks="EAR or ITAR classification number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="PARENT" maxtype="UPPER" title="Export Control Classification Parent Number" remarks="ECCN Category to which this classification belongs" length="20" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="DESCRIPTION" maxtype="ALN" title="Description" remarks="ECCN Description from ITAR or EAR" length="50" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="true" scale="0"  searchtype="TEXT" localizable="false" restricted="false" />
+      <attrdef attribute="NOTES" maxtype="ALN" title="Notes" remarks="Extra notes for this ECCN clarifying commerce specifics" length="50" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="TEXT" localizable="false" restricted="false" />
+      <attrdef attribute="ISCATEGORY" maxtype="YORN" title="Is Category" remarks="Set when this is not an ECCN but a parent category of ECCNs" length="1" persistent="true" required="true" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="ISITAR" maxtype="YORN" title="Military Classification" remarks="Set to true when this is an ITAR classification. false if an EAR classification" length="1" persistent="true" required="true" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+    </define_table>
+    
+  	<!-- Link Items to ECCNs -->
+    <define_table persistent="true" type="system" object="ITEMTOECCN" description="Links Export Control Classification Numbers To Items. Items can only have 1 ECCN" service="GTM" mainobject="false" internal="true" primarykey="ECCN,ITEMNUM" classname="psdi.mbo.custapp.CustomMboSet">
+      <attrdef attribute="ECCN" maxtype="UPPER" title="Export Control Classification Number" remarks="EAR or ITAR classification number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="ITEMNUM" maxtype="UPPER" title="Item Number" remarks="Item with attached ECCN" length="30" persistent="true" required="true" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create relationships -->
+    <create_relationship name="ECCN" parent="ITEM" child="ECCN" whereclause="ECCN in (select ECCN from ITEMTOECCN where ITEMNUM = :itemnum)" remarks="ECCN record if this item is export controlled" />
+
+    <!-- Create the License table -->
+    <define_table persistent="true" type="org" object="DSPLICENSE" description="Export Control DSP Licenses" service="GTM" classname="biz.gbat.tivoli.gtm.mbos.DSPLicenseSet" mainobject="true" internal="false" primarykey="LICENSENUM" >
+      <attrdef attribute="LICENSENUM" maxtype="UPPER" title="License Number" remarks="Export Control EAR or ITAR DSP License Number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="DSPNUM" maxtype="INTEGER" title="DSP-" remarks="5 to define DSP-5 license or 73 to define DSP-73 license" length="2" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="ISSUEDATE" maxtype="DATE" title="Issue Date" remarks="This marks the date this license was issued." length="20" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="DESCRIPTION" maxtype="ALN" title="Description" remarks="License Description" length="50" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="true" scale="0"  searchtype="TEXT" localizable="false" restricted="false" />
+      <attrdef attribute="REMARKS" maxtype="ALN" title="Remarks" remarks="Extra notes for this license" length="50" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="TEXT" localizable="false" restricted="false" />
+      <attrdef attribute="MONTHSVALID" maxtype="INTEGER" title="Months Valid" remarks="Number of months from the date of issue that this license is valid for" length="3" persistent="true" required="true" mustbe="false" ispositive="true" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="DESTINATION" maxtype="UPPER" title="Country of Ultimate Destination" remarks="Country of Ultimate Desitination" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="EXITPORT" maxtype="UPPER" title="Port Of Exit" remarks="Probable Port of Exit" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="COMPANYID" maxtype="BIGINT" title="Applicant" remarks="Licensee" length="19" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="NEWSHIPMENTS" maxtype="YORN" title="New Shipments Only" remarks="Completely new shipment when true or unshipped balance under license numbers when false" length="1" persistent="true" required="true" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="REFAGREEMENT" maxtype="UPPER" title="Referenced Agreement" remarks="Referenced Agreement" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="COMMODITYFINANCETYPE" maxtype="INTEGER" title="Commodity Finance Type" remarks="Foreign Military Sale, Foreign Military Financing, Grant Aid Program, or N/A" length="1" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="TOTALCOST" maxtype="INTEGER" title="Total Line Cost" remarks="Sum of all DSP license line items related to this license" length="19" persistent="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="ENTRYPORT" maxtype="UPPER" title="Port Of Entry" remarks="Probable Port of Entry required when DSP-73" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="REGISTRANTCODE" maxtype="UPPER" title="PM/DDTC Registrant Code" remarks="PM/DDTC Applicant/Registrant Code. Required when DSP-73 license" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="FIRSTEXITDATE" maxtype="DATE" title="First Export Date" remarks="Probable date of first exit from US. Required when DSP-73 license" length="20" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="FINALENTRYDATE" maxtype="DATE" title="Final Entry Date" remarks="Probable date of last entry to US. Required when DSP-73 license" length="20" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="COMPLIANCEDISCNUM" maxtype="UPPER" title="Compliance Disclosure Number" remarks="Compliance Disclosure Number if this is a DSP-73 license" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="EXPDATE" maxtype="DATE" title="Expiration Date" remarks="Determined by combining ISSUEDATE with MONTHSVALID" length="20" persistent="false" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create the License line item table -->
+    <define_table persistent="true" type="org" object="DSPLICENSELINE" description="Export Control DSP Licenses" service="GTM" classname="biz.gbat.tivoli.gtm.mbos.DSPLicenseLineSet" mainobject="true" internal="false" primarykey="LICENSENUM,LINENUM" >
+      <attrdef attribute="LINENUM" maxtype="INTEGER" title="Line Number" remarks="EAR or ITAR License Line Item Number" length="12" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="LICENSENUM" maxtype="UPPER" title="License Number" remarks="EAR or ITAR License Number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="COMMODITY" maxtype="UPPER" title="Commodity Description" remarks="Description of the commodity for this line including model number, part number, military designation, etc" length="100" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="QUANTITY" maxtype="DECIMAL" title="Quantity" remarks="Quantity in units from the unit type field" length="15" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="2"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="UNITTYPE" maxtype="UPPER" title="Unit Type" remarks="Usually one of Bags, Barrels or Drums, Boxes, Bullets or Rounds, Bundles, Cases, Containers, Copies, Dozen, Dozen Pairs, Feet, Forgings, Gallon, Grams, Gross, Gross Containers, Gross Lines, Inches, Items, Kilos, Kits, Line, Liters, Logs, Magaz, Man years, Meters, Number, Ounces, Packs/Packets, Pairs, Pallets, Pieces, Pounds, Quarts, Rolls, Sets, Sheets, ShipSet, Square Meters, Squares, Systems, Tins, Tons, Tubes, Units, Visits, Wafers, Yards" length="15" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="2"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="DEFARTICLETYPE" maxtype="UPPER" title="Defense Article Type" remarks="Defense article type of commodity. Either Hardare or Technical Data" length="15" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="ECCN" maxtype="UPPER" title="USML Number" remarks="United States Munitions List Number including Category, Sub Category, and Commodity Code" length="15" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="ISITEMSME" maxtype="YORN" title="Item is SME" remarks="True when item SME and DSP-83 is required" length="1" persistent="true" required="true" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="DSP83NUM" maxtype="UPPER" title="DSP83 Number" remarks="DSP-83 license number" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="UNITCOST" maxtype="DECIMAL" title="Unit Price" remarks="Price of each commodity unit in this line" length="15" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="2"  searchtype="EXACT" localizable="false" restricted="false" />
+      <attrdef attribute="LINEITEMTOTAL" maxtype="DECIMAL" title="Line Cost" remarks="Total cost of all units in this line (Unit Price * Quantity)" length="15" persistent="false" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="2"  searchtype="EXACT" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create the table to relate DSP licenses to Government Agencies -->
+    <define_table persistent="true" type="org" object="DSPLICENSETOAGENCY" description="Links DSP License to a government agency contact" service="GTM" mainobject="false" internal="false" primarykey="LICENSENUM,AGENCY" classname="psdi.mbo.custapp.CustomMboSet">
+      <attrdef attribute="LICENSENUM" maxtype="UPPER" title="License Number" remarks="EAR or ITAR License Number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="AGENCY" maxtype="UPPER" title="Agency" remarks="Government Agency (Air Force, Navy, Army, NASA, NSA, Energy, Other)" length="15" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="NAME" maxtype="ALN" title="Name" remarks="Contact Name" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="TELEPHONE" maxtype="UPPER" title="Telephone" remarks="Telephone Number" length="20" persistent="true" required="false" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+    </define_table>
+
+    <!-- Create the Sojourn Country table to relate countries of sojourn to DSP licenses -->
+    <define_table persistent="true" type="org" object="SOJOURNCOUNTRY" description="Links DSP License to Countries of Sojourn" service="GTM" mainobject="false" internal="false" primarykey="LICENSENUM,COUNTRY" classname="psdi.mbo.custapp.CustomMboSet">
+      <attrdef attribute="LICENSENUM" maxtype="UPPER" title="License Number" remarks="EAR or ITAR License Number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="COUNTRY" maxtype="UPPER" title="Country of Sojourn" remarks="Country of Sojourn" length="15" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create the Related DSP license table -->
+    <define_table persistent="true" type="org" object="RELATEDDSPLICENSE" description="Links DSP License to Countries of Sojourn" service="GTM" mainobject="false" internal="false" primarykey="LICENSENUM,RELLICENSENUM" classname="psdi.mbo.custapp.CustomMboSet">
+      <attrdef attribute="LICENSENUM" maxtype="UPPER" title="Parent License Number" remarks="EAR or ITAR License Number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="RELLICENSENUM" maxtype="UPPER" title="Child License Number" remarks="EAR or ITAR License Number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create the Commerce License Country table to relate countries to commerce license types -->
+    <define_table persistent="true" type="system" object="CCLCHART" description="Links Countries to types of licenses required for export" service="GTM" mainobject="false" internal="false" primarykey="LICENSETYPE,COUNTRY" classname="psdi.mbo.custapp.CustomMboSet">
+      <attrdef attribute="LICENSETYPE" maxtype="UPPER" title="Reason For Control" remarks="Commerce Country Chart Column" length="10" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="COUNTRY" maxtype="ALN" title="Country" remarks="Country" length="50" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="DESCRIPTION" maxtype="ALN" title="Reason For Control" remarks="Reason for control" length="50" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="true" scale="0"  searchtype="TEXT" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create the Commerce License to ECCN table to relate commerce license types to eccns -->
+    <define_table persistent="true" type="system" object="CCLECCN" description="Links Commerce License Types to ECCNs" service="GTM" mainobject="false" internal="false" primarykey="LICENSETYPE,ECCN" classname="psdi.mbo.custapp.CustomMboSet">
+      <attrdef attribute="LICENSETYPE" maxtype="UPPER" title="Chart Column" remarks="Commerce Country Chart Column" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="ECCN" maxtype="UPPER" title="Export Control Classification Number" remarks="EAR classification number" length="20" persistent="true" required="true" mustbe="true" ispositive="false" canautonum="false" userdefined="false" haslongdesc="false" scale="0"  searchtype="WILDCARD" localizable="false" restricted="false" />
+      <attrdef attribute="DESCRIPTION" maxtype="ALN" title="Description" remarks="Details for control reason" length="50" persistent="true" required="false" mustbe="false" ispositive="false" canautonum="false" userdefined="false" haslongdesc="true" scale="0"  searchtype="TEXT" localizable="false" restricted="false" />
+    </define_table>
+    
+    <!-- Create relationships for DSP License object -->
+    <create_relationship name="LINEITEMS" parent="DSPLICENSE" child="DSPLICENSELINE" whereclause="licensenum = :licensenum" remarks="Line Items for this DSP license" />
+    <create_relationship name="CONTACTAGENCIES" parent="DSPLICENSE" child="DSPLICENSETOAGENCY" whereclause="licensenum = :licensenum" remarks="Contact Government Agencies for this DSP license" />
+    <create_relationship name="SOJOURNCOUNTRIES" parent="DSPLICENSE" child="SOJOURNCOUNTRY" whereclause="licensenum = :licensenum" remarks="Countrys where commodity may sojourn" />
+    <create_relationship name="RELATEDLICENSES" parent="DSPLICENSE" child="DSPLICENSE" whereclause="licensenum in (select rellicensenum from RELATEDDSPLICENSE where licensenum = :licensenum)" remarks="Related Licenses" />
+    
+    <create_app app="DSPLICENSE" description="DSP License Management" maintbname="DSPLICENSE" />
+    
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="READ" description="Read DSP Licenses" alsogrants="CLEAR,NEXT,PREVIOUS,BOOKMARK" alsorevokes="ALL" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="BOOKMARK" description="Add to Bookmarks" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="DELETE" description="Delete DSP License" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="ADDDSP5" description="New DSP-5 License" alsogrants="SAVE" alsorevokes="DUPLICATE" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="ADDDSP73" description="New DSP-73 License" alsogrants="SAVE" alsorevokes="DUPLICATE" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="NEXT" description="Next DSP License" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="PREVIOUS" description="Previous DSP License" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="SAVE" description="Save DSP License" alsorevokes="INSERT,DUPLICATE,FIELDDEFS,DELETE" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="SEARCHBOOK" description="Bookmarks" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    <add_sigoption visible="true" app="DSPLICENSE" optionname="SEARCHMORE" description="More Search Fields" prerequisite="READ" grantapp="DSPLICENSE" grantoption="READ" esigenabled="false" langcode="EN" />
+    
+    <create_module menu_position="last" module="GTM" description="Global Trade Management" image="modimg_gtm.png">
+      <module_menu_app app="DSPLICENSE" />
+    </create_module>
+    
+    <freeform description="Add Menu Items and Application Security">
+      <sql target="all">insert into maxmenu(menutype,moduleapp,position,subposition,elementtype,keyvalue,visible,tabdisplay,headerdescription,image,url,accesskey,maxmenuid) select menutype, 'DSPLICENSE', position, subposition, elementtype, keyvalue, visible, tabdisplay, headerdescription, image, url, accesskey, maxmenuseq.nextval from maxmenu where moduleapp = 'ACTION' and keyvalue != 'DUPLICATE' and keyvalue != 'INSERT';
+      
+insert into maxmenu(menutype,moduleapp,position,subposition,elementtype,headerdescription,visible,tabdisplay,maxmenuid) values('APPMENU','DSPLICENSE',11,0,'HEADER', 'Create', 1, 'ALL', maxmenuseq.nextval);
+
+insert into maxmenu(menutype,moduleapp,position,subposition,elementtype,keyvalue,image,visible,tabdisplay,maxmenuid) values('APPMENU','DSPLICENSE',11,1,'OPTION', 'ADDDSP5', 'nav_icon_insertkey.gif', 1, 'ALL', maxmenuseq.nextval);
+
+insert into maxmenu(menutype,moduleapp,position,subposition,elementtype,keyvalue,image,visible,tabdisplay,maxmenuid) values('APPMENU','DSPLICENSE',11,2,'OPTION', 'ADDDSP73', 'nav_icon_insertkey.gif', 1, 'ALL', maxmenuseq.nextval);
+
+commit;
+
+insert into applicationauth (app, groupname, optionname, conditionnum, applicationauthid) select 'DSPLICENSE', groupname, optionname, conditionnum, applicationauthseq.nextval from applicationauth where app = 'CONTMASTER' and optionname in (select optionname from sigoption where app = 'DSPLICENSE');
+		
+insert into applicationauth (app, groupname, optionname, conditionnum, applicationauthid) select 'DSPLICENSE', groupname, 'ADDDSP5', conditionnum, applicationauthseq.nextval from applicationauth where app = 'CONTMASTER' and optionname = 'INSERT';
+
+insert into applicationauth (app, groupname, optionname, conditionnum, applicationauthid) select 'DSPLICENSE', groupname, 'ADDDSP73', conditionnum, applicationauthseq.nextval from applicationauth where app = 'CONTMASTER' and optionname = 'INSERT';
+
+commit;
+
+update maxapps set originalapp = 'CUSTAPP' where app = 'DSPLICENSE';
+
+commit;
+
+      </sql>
+    </freeform>    
+  </statements>
+</script>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<product name="Global Trade Management">
+<targetupdate>
+		<targetname>init</targetname>
+		<content>
+			<update>
+				<property name="maximo.mbowarclasspath" value="lib/gtm.jar" />				
+			</update>
+		</content>
+	</targetupdate>
+  
+  <targetupdate>
+		<targetname>maximouiWarBuild</targetname>
+		<content>
+			<add>
+				<war destfile="${maximo.deploydir.temp}/${maximo.maximouiwarfile}" 
+			 webxml="${maximo.basedir}/maximouiweb/webmodule/WEB-INF/web.xml" 
+			 index="true">
+         
+					<lib dir="${maximo.basedir}/../gtm/lib">
+						<include name="gtmuiweb.jar" />
+					</lib>
+				 
+				</war>
+			</add>
+		</content>
+	</targetupdate>
+	
+	<targetupdate>
+		<targetname>earBuild</targetname>
+		<content>
+			<add>
+				<ear destfile="${maximo.deploydir}/${maximo.earfile}" appxml="${maximo.appxmlfile}">
+
+					<fileset dir="${maximo.basedir}/../gtm">
+						<include name="lib/gtm.jar" />
+					</fileset>
+				</ear>
+			</add>
+		</content>
+	</targetupdate>
+</product>

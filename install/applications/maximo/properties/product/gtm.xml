@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+	<name>Global Trade Management For Maximo</name>
+	<version>
+		<major>7</major>
+		<minor>5</minor>
+		<modlevel>0</modlevel>
+		<patch>0</patch>
+		<build>4</build>
+	</version>
+	<dbmaxvarname>GTM</dbmaxvarname>
+	<dbscripts>gtm</dbscripts>	
+	<dbversion>V7500-04</dbversion>	
+	<checklicense>0</checklicense>
+	<lastdbversion>V7500-00</lastdbversion>
+</product>

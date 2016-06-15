@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatescript version="">
+	<app apptype="webclient" id="dsplicense">
+		<modify control="results">
+			<set property="label" value="List"/>
+		</modify>
+		<modify control="results_showlist">
+			<set property="label" value="TABLE TITLE"/>
+		</modify>
+		<modify control="results_showlist_column_select">
+			<set property="mxevent_desc" value="Select Row {0}"/>
+		</modify>
+		<modify control="results_showlist_column_link">
+			<set property="mxevent_desc" value="Go To %1"/>
+		</modify>
+		<modify control="results_bookmark">
+			<set property="mxevent_desc" value="Add to Bookmarks"/>
+		</modify>
+		<modify control="main">
+			<set property="label" value="Main"/>
+		</modify>
+		<modify control="searchmore">
+			<set property="label" value="More Search Fields"/>
+		</modify>
+		<modify control="searchmore_buttongroup_1">
+			<set property="label" value="Find"/>
+		</modify>
+		<modify control="searchmore_buttongroup_2">
+			<set property="label" value="Clear"/>
+		</modify>
+		<modify control="searchmore_buttongroup_3">
+			<set property="label" value="Cancel"/>
+		</modify>
+		<modify control="searchbook">
+			<set property="label" value="My Bookmarks"/>
+		</modify>
+		<modify control="bookmarks_tablecolumn_3">
+			<set property="mxevent_desc" value="Delete"/>
+		</modify>
+		<modify control="bookmarks_2_1">
+			<set property="label" value="OK"/>
+		</modify>
+		<modify control="ctrl_powerapp">
+			<set property="id" value="dsplicense"/>
+			<set property="version" value="7.5.0.0"/>
+			<set property="beanclass" value="biz.gbat.tivoli.gtm.webclient.beans.DSPLicenseAppBean"/>
+			<set property="keyattribute" value="licensenum"/>
+			<set property="mboname" value="DSPLICENSE"/>
+		</modify>
+		<add container="dsplicense" control="configurationblock">
+			<set property="id" value="datastore_configurationblock"/>
+		</add>
+		<modify control="results_showlist">
+			<set property="label" value="DSP Licenses"/>
+			<set property="mboname" value="DSPLICENSE"/>
+		</modify>
+		<remove container="results_showlist_tablebody" control="results_showlist_column"/>
+		<add before="results_bookmark" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="ISSUEDATE"/>
+			<set property="id" value="results_showlist_column3"/>
+		</add>
+		<add before="results_showlist_column3" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="DESCRIPTION"/>
+			<set property="id" value="results_showlist_column2"/>
+		</add>
+		<add before="results_showlist_column2" container="results_showlist_tablebody" control="tablecol">
+			<set property="dataattribute" value="DSPNUM"/>
+			<set property="id" value="results_showlist_column1"/>
+		</add>
+		<modify control="results_showlist_column_select">
+			<set property="dataattribute" value="LICENSENUM"/>
+			<clear property="hidden"/>
+		</modify>
+		<modify control="results_showlist_column_link">
+			<set property="dataattribute" value="LICENSENUM"/>
+		</modify>
+		<modify control="results_bookmark">
+			<clear property="hidden"/>
+		</modify>
+		<remove container="main" control="maintab_section"/>
+		<add container="main" control="table">
+			<set property="id" value="maintab_tbl_contactagencies"/>
+			<set property="label" value="Associated Government Agencies"/>
+			<set property="relationship" value="CONTACTAGENCIES"/>
+		</add>
+		<add container="maintab_tbl_contactagencies" control="tablebody">
+			<set property="displayrowsperpage" value="5"/>
+			<set property="filterable" value="true"/>
+			<set property="filterexpanded" value="false"/>
+			<set property="id" value="maintab_tbl_contactagencies_tblbody"/>
+		</add>
+		<add container="maintab_tbl_contactagencies_tblbody" control="tablecol">
+			<set property="dataattribute" value="agency"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_contactagencies_col1"/>
+			<set property="menutype" value="normal"/>
+		</add>
+		<add container="maintab_tbl_contactagencies_tblbody" control="tablecol">
+			<set property="dataattribute" value="name"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_contactagencies_col2"/>
+			<set property="menutype" value="normal"/>
+		</add>
+		<add container="maintab_tbl_contactagencies_tblbody" control="tablecol">
+			<set property="dataattribute" value="telephone"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_contactagencies_col3"/>
+			<set property="menutype" value="normal"/>
+		</add>
+		<add before="maintab_tbl_contactagencies" container="main" control="table">
+			<set property="id" value="maintab_tbl_relatedlicenses"/>
+			<set property="label" value="Related Licenses"/>
+			<set property="relationship" value="RELATEDLICENSES"/>
+		</add>
+		<add container="maintab_tbl_relatedlicenses" control="tablebody">
+			<set property="displayrowsperpage" value="5"/>
+			<set property="filterable" value="true"/>
+			<set property="filterexpanded" value="false"/>
+			<set property="id" value="maintab_tbl_relatedlicenses_tblbody"/>
+		</add>
+		<add container="maintab_tbl_relatedlicenses_tblbody" control="tablecol">
+			<set property="dataattribute" value="licensenum"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_relatedlicenses_col1"/>
+			<set property="menutype" value="normal"/>
+			<set property="movetoattribute" value="licensenum"/>
+			<set property="movetoresultset" value="masterview"/>
+		</add>
+		<add container="maintab_tbl_relatedlicenses_tblbody" control="tablecol">
+			<set property="dataattribute" value="dspnum"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_relatedlicenses_col2"/>
+			<set property="inputmode" value="readonly"/>
+		</add>
+		<add container="maintab_tbl_relatedlicenses_tblbody" control="tablecol">
+			<set property="dataattribute" value="description"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_relatedlicenses_col3"/>
+			<set property="inputmode" value="readonly"/>
+		</add>
+		<add container="maintab_tbl_relatedlicenses_tblbody" control="tablecol">
+			<set property="dataattribute" value="issuedate"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_relatedlicenses_col4"/>
+			<set property="inputmode" value="readonly"/>
+		</add>
+		<add container="maintab_tbl_relatedlicenses_tblbody" control="tablecol">
+			<set property="dataattribute" value="expdate"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_relatedlicenses_col5"/>
+			<set property="inputmode" value="readonly"/>
+		</add>
+		<add before="maintab_tbl_relatedlicenses" container="main" control="section">
+			<set property="border" value="true"/>
+			<set property="id" value="main_sec1"/>
+		</add>
+		<add container="main_sec1" control="sectionrow">
+			<set property="id" value="main_sec1_r1"/>
+		</add>
+		<add container="main_sec1_r1" control="sectioncol">
+			<set property="id" value="main_sec1_c1"/>
+		</add>
+		<add container="main_sec1_c1" control="section">
+			<set property="id" value="main_sec1_c1_1"/>
+		</add>
+		<add container="main_sec1_c1_1" control="textbox">
+			<set property="dataattribute" value="DSPNUM"/>
+			<set property="id" value="maintab_attr11"/>
+			<set property="inputmode" value="readonly"/>
+		</add>
+		<add container="main_sec1_c1_1" control="multiparttextbox">
+			<set property="dataattribute" value="licensenum"/>
+			<set property="descdataattribute" value="description"/>
+			<set property="id" value="main_sec1_1"/>
+			<set property="longdescription" value="true"/>
+		</add>
+		<add container="main_sec1_c1_1" control="textbox">
+			<set property="dataattribute" value="ISSUEDATE"/>
+			<set property="id" value="maintab_attr22"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add container="main_sec1_c1_1" control="textbox">
+			<set property="dataattribute" value="MONTHSVALID"/>
+			<set property="id" value="maintab_attr3"/>
+		</add>
+		<add container="main_sec1_c1_1" control="textbox">
+			<set property="dataattribute" value="EXPDATE"/>
+			<set property="id" value="main_sec1_2"/>
+		</add>
+		<add container="main_sec1_c1_1" control="textbox">
+			<set property="dataattribute" value="COMPANYID"/>
+			<set property="id" value="maintab_attr6"/>
+			<set property="lookup" value="companies"/>
+			<set property="menutype" value="normal"/>
+		</add>
+		<add container="main_sec1_c1_1" control="textbox">
+			<set property="dataattribute" value="TOTALCOST"/>
+			<set property="id" value="maintab_attr10"/>
+		</add>
+		<add container="main_sec1_r1" control="sectioncol">
+			<set property="id" value="main_sec1_c2"/>
+		</add>
+		<add container="main_sec1_c2" control="section">
+			<set property="id" value="main_sec1_c2_1"/>
+		</add>
+		<add container="main_sec1_c2_1" control="textbox">
+			<set property="dataattribute" value="DESTINATION"/>
+			<set property="id" value="maintab_attr4"/>
+		</add>
+		<add container="main_sec1_c2_1" control="textbox">
+			<set property="dataattribute" value="EXITPORT"/>
+			<set property="id" value="maintab_attr5"/>
+		</add>
+		<add container="main_sec1_c2_1" control="textbox">
+			<set property="dataattribute" value="ENTRYPORT"/>
+			<set property="id" value="maintab_attr12"/>
+		</add>
+		<add container="main_sec1_c2_1" control="textbox">
+			<set property="dataattribute" value="FIRSTEXITDATE"/>
+			<set property="id" value="maintab_attr14"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add container="main_sec1_c2_1" control="textbox">
+			<set property="dataattribute" value="FINALENTRYDATE"/>
+			<set property="id" value="maintab_attr15"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add container="main_sec1_c2_1" control="checkbox">
+			<set property="dataattribute" value="NEWSHIPMENTS"/>
+			<set property="id" value="maintab_attr7"/>
+		</add>
+		<add container="main_sec1" control="sectionrow">
+			<set property="id" value="main_sec1_r2"/>
+		</add>
+		<add container="main_sec1_r2" control="sectioncol">
+			<set property="id" value="main_sec1_r2_c1"/>
+		</add>
+		<add container="main_sec1_r2_c1" control="multilinetextbox">
+			<set property="dataattribute" value="REMARKS"/>
+			<set property="id" value="maintab_attr20"/>
+		</add>
+		<add container="main_sec1_r2_c1" control="table">
+			<set property="id" value="maintab_tbl_sojourncountries"/>
+			<set property="label" value="Countries of Sojourn"/>
+			<set property="relationship" value="SOJOURNCOUNTRIES"/>
+		</add>
+		<add container="maintab_tbl_sojourncountries" control="tablebody">
+			<set property="displayrowsperpage" value="5"/>
+			<set property="filterable" value="false"/>
+			<set property="filterexpanded" value="false"/>
+			<set property="id" value="maintab_tbl_sojourncountries_tblbody"/>
+		</add>
+		<add container="maintab_tbl_sojourncountries_tblbody" control="tablecol">
+			<set property="dataattribute" value="country"/>
+			<set property="filterable" value="false"/>
+			<set property="id" value="maintab_tbl_sojourncountries_col1"/>
+		</add>
+		<add container="main_sec1_r2" control="sectioncol">
+			<set property="id" value="main_sec1_r2_c2"/>
+		</add>
+		<add container="main_sec1_r2_c2" control="textbox">
+			<set property="dataattribute" value="REFAGREEMENT"/>
+			<set property="id" value="maintab_attr8"/>
+		</add>
+		<add container="main_sec1_r2_c2" control="textbox">
+			<set property="dataattribute" value="COMMODITYFINANCETYPE"/>
+			<set property="id" value="maintab_attr9"/>
+		</add>
+		<add container="main_sec1_r2_c2" control="textbox">
+			<set property="dataattribute" value="REGISTRANTCODE"/>
+			<set property="id" value="maintab_attr13"/>
+		</add>
+		<add container="main_sec1_r2_c2" control="textbox">
+			<set property="dataattribute" value="COMPLIANCEDISCNUM"/>
+			<set property="id" value="maintab_attr16"/>
+		</add>
+		<remove container="searchmore_1" control="searchmore_attr"/>
+		<add container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="ISSUEDATE"/>
+			<set property="id" value="searchmore_attr22"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add before="searchmore_attr22" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="REMARKS"/>
+			<set property="id" value="searchmore_attr20"/>
+		</add>
+		<add before="searchmore_attr20" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="DESCRIPTION_LONGDESCRIPTION"/>
+			<set property="id" value="searchmore_attr19"/>
+		</add>
+		<add before="searchmore_attr19" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="COMPLIANCEDISCNUM"/>
+			<set property="id" value="searchmore_attr16"/>
+		</add>
+		<add before="searchmore_attr16" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="FINALENTRYDATE"/>
+			<set property="id" value="searchmore_attr15"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add before="searchmore_attr15" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="FIRSTEXITDATE"/>
+			<set property="id" value="searchmore_attr14"/>
+			<set property="lookup" value="datelookup"/>
+		</add>
+		<add before="searchmore_attr14" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="REGISTRANTCODE"/>
+			<set property="id" value="searchmore_attr13"/>
+		</add>
+		<add before="searchmore_attr13" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="ENTRYPORT"/>
+			<set property="id" value="searchmore_attr12"/>
+		</add>
+		<add before="searchmore_attr12" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="DSPNUM"/>
+			<set property="id" value="searchmore_attr11"/>
+		</add>
+		<add before="searchmore_attr11" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="COMMODITYFINANCETYPE"/>
+			<set property="id" value="searchmore_attr9"/>
+		</add>
+		<add before="searchmore_attr9" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="REFAGREEMENT"/>
+			<set property="id" value="searchmore_attr8"/>
+		</add>
+		<add before="searchmore_attr8" container="searchmore_1" control="checkbox">
+			<set property="dataattribute" value="NEWSHIPMENTS"/>
+			<set property="id" value="searchmore_attr7"/>
+		</add>
+		<add before="searchmore_attr7" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="COMPANYID"/>
+			<set property="id" value="searchmore_attr6"/>
+		</add>
+		<add before="searchmore_attr6" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="EXITPORT"/>
+			<set property="id" value="searchmore_attr5"/>
+		</add>
+		<add before="searchmore_attr5" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="DESTINATION"/>
+			<set property="id" value="searchmore_attr4"/>
+		</add>
+		<add before="searchmore_attr4" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="MONTHSVALID"/>
+			<set property="id" value="searchmore_attr3"/>
+		</add>
+		<add before="searchmore_attr3" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="DESCRIPTION"/>
+			<set property="id" value="searchmore_attr2"/>
+		</add>
+		<add before="searchmore_attr2" container="searchmore_1" control="textbox">
+			<set property="dataattribute" value="LICENSENUM"/>
+			<set property="id" value="searchmore_attr1"/>
+		</add>
+		<remove container="searchmore_buttongroup" control="searchmore_buttongroup_2"/>
+		<add before="searchmore_buttongroup_3" container="searchmore_buttongroup" control="pushbutton">
+			<set property="id" value="qbe_revisebutton"/>
+			<set property="label" value="Revise"/>
+			<set property="menutype" value="SEARCHMOREREVISE"/>
+			<set property="targetid" value="searchmore"/>
+		</add>
+		<add before="qbe_revisebutton" container="searchmore_buttongroup" control="pushbutton">
+			<set property="id" value="qbe_restoreappdefault_button"/>
+			<set property="label" value="Restore Application Defaults"/>
+			<set property="mxevent" value="qbeclear"/>
+		</add>
+		<modify control="searchbook">
+			<set property="mboname" value="DSPLICENSE"/>
+		</modify>
+		<modify control="bookmarks_tablecolumn_1">
+			<set property="dataattribute" value="LICENSENUM"/>
+		</modify>
+		<modify control="bookmarks_tablecolumn_3">
+			<clear property="hidden"/>
+		</modify>
+	</app>
+</updatescript>

@@ -1,0 +1,32 @@
+<processing>
+	<job name="Updating Database">
+		<os family="windows" />
+		<executeForPack name="DB Structure" />
+		<executefile name="$maximo.home.dir\tools\maximo\updatedb.bat">
+		  <env>user.dir=$maximo.home.dir\tools\maximo</env>
+		</executefile>
+	</job>
+	<job name="Updating Database">
+		<os family="unix" />
+		<executeForPack name="DB Structure" />
+		<executefile name="$maximo.home.dir/tools/maximo/updatedb.sh">
+		  <env>user.dir=$maximo.home.dir/tools/maximo</env>
+		</executefile>
+	</job>
+	<job name="Building EAR">
+		<os family="windows" />
+		<executeForPack name="Build EAR" />
+		<executefile name="$maximo.home.dir/deployment/buildmaximoear.cmd">
+		  <env>user.dir=$maximo.home.dir\deployment</env>
+		</executefile>
+	</job>
+	<job name="Building EAR">
+		<os family="unix" />
+		<executeForPack name="Build EAR" />
+		<executefile name="$maximo.home.dir/deployment/buildmaximoear.sh">
+		  <env>user.dir=$maximo.home.dir/deployment</env>
+		</executefile>
+	</job>
+	<onFail previous="true" next="false" />
+	<onSuccess previous="false" next="true" />
+</processing>

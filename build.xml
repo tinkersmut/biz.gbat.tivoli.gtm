@@ -1,0 +1,65 @@
+<project name="GTM" default="deploy" basedir=".">
+	<property file="build.properties" />
+
+	<target name="deploy" depends="build.jar" description="Deploys to the maximo directory">
+		<copy todir="${maximo75.home}">
+			<fileset dir="${install.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.dbc" />
+			</fileset>
+		</copy>
+
+		<copy todir="${maximo75.home}/applications/maximo/lib">
+			<fileset dir="${lib.dir}">
+				<include name="${product.jar}" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="undeploy" description="Removes this app from the installation">
+		<delete dir="${maximo75.home}">
+			<include name="**/gtm/*.dbc"/>
+			<include name="**/gtm/*.mxs"/>
+			<include name="**/gtm.xml"/>
+			<include name="**/buildgtm.xml"/>
+			<include name="**/modimg_gtm.png"/>
+		</delete>
+		<exec dir="${maximo75.home}/tools/maximo" executable="${maximo75.home}/tools/maximo/maxinst.bat" />
+	</target>
+
+	<target name="build.jar" description="creates product jar">
+		<delete file="${lib.dir}/${product.jar}" quiet="true" />
+		<delete file="${lib.dir}/${productweb.jar}" quiet="true" />
+		<jar destfile="${lib.dir}/${product.jar}">
+			<fileset dir="${build.dir}">
+				<include name="**/*.class" />
+				<exclude name="biz/gbat/tivoli/gtm/webclient/**" />
+			</fileset>
+		</jar>
+		<jar destfile="${lib.dir}/${productweb.jar}">
+			<fileset dir="${build.dir}">
+				<include name="**/webclient/**/*.class" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="build.installer" depends="build.jar" description="Creates an installer for this product">
+
+		<taskdef name="izpack" classpath="izpack/lib/compiler.jar" classname="com.izforge.izpack.ant.IzPackTask" />
+
+		<delete file="${file.installer}" quiet="true" />
+
+		<!-- set variables for installer 
+		<replace file="${ant.dir}/izpack/izpack.xml" token="[%VERSION%]" value="${rm.version}" />
+		<replace file="${ant.dir}/izpack/izpack.xml" token="[%EXPDATE%]" value="${rm.expdate}" />
+		<replace file="${ant.dir}/izpack/izpack.xml" token="[%JAR_PATH%]" value="${rm.jarfile}" />
+		<replace file="${ant.dir}/izpack/izpack.xml" token="[%LICENSEFILE%]" value="license-${license}-temp.html" />
+		<replace file="${ant.dir}/izpack/license-${license}-temp.html" token="[%COMPANYNAME%]" value="${company.license.for}" />
+		-->
+
+		<!-- create the installer -->
+		<izpack input="izpack.xml" output="${basedir}/${file.installer}" installerType="standard" basedir="${ant.dir}" izPackDir="izpack" />
+
+	</target>
+
+</project>

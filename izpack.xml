@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installation version="1.0">
+	<info>
+		<appname>Global Trade Management For Maximo</appname>
+		<appversion>Version 7.5.0.0</appversion>
+		<authors>
+			<author name="Global Business Application Technologies" email="support@gbat.biz" />
+		</authors>
+		<writeinstallationinformation>no</writeinstallationinformation>
+		<url>http://www.gbat.biz</url>
+		<uninstaller write="no" />
+	</info>
+
+	<guiprefs height="725" resizable="no" width="900">
+		<laf name="metouia">
+			<os family="unix" />
+		</laf>
+		<laf name="looks">
+			<os family="windows" />
+			<param name="variant" value="plastic3D" />
+		</laf>
+	</guiprefs>
+
+	<locale>
+		<langpack iso3="eng" />
+	</locale>
+
+	<resources>
+		<res id="Installer.image" src="logo.png" />
+
+		<res id="HTMLLicencePanel.licence" src="license.html" />
+		<res id="ProcessPanel.Spec.xml" src="ProcessPanelSpec.xml" />
+		<res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows" />
+		<res id="TargetPanel.dir.unix" src="TargetPanel.dir.unix" />
+	</resources>
+
+	<panels>
+		<panel classname="HelloPanel" />
+		<panel classname="HTMLLicencePanel" />
+		<panel classname="PacksPanel" />
+		<panel classname="TargetPanel" />
+		<panel classname="InstallPanel" />
+		<panel classname="ProcessPanel" />
+		<panel classname="SimpleFinishPanel" />
+	</panels>
+
+	<dynamicvariables>
+		<variable name="maximo.deployment.dir" value="$INSTALL_PATH/deployment" />
+		<variable name="maximo.home.dir" value="$INSTALL_PATH" />
+	</dynamicvariables>
+	
+	<packs>
+		<pack name="Binaries" required="yes">
+			<description>Global Trade Management Binaries. This pack will deliver all files and jars required to run Global Trade Management for Maximo</description>
+			<singlefile src="lib/gtm.jar" target="$INSTALL_PATH/applications/gtm/lib/gtm.jar" override="true" />
+			<singlefile src="lib/gtmuiweb.jar" target="$INSTALL_PATH/applications/gtm/lib/gtmuiweb.jar" override="true" />
+		</pack>
+		
+		<pack name="DB Structure" required="no">
+			<description>This pack updates your database with necessary meta-data information. If not selected, updatedb will not be invoked. Only select this if this is your first install and your database needs to be configured.</description>
+			<fileset dir="./install" targetdir="$INSTALL_PATH" override="true">
+				<include name="**/*" />
+				<exclude name="**/.svn/**" />
+			</fileset>
+
+		</pack>
+		
+		<pack name="Build EAR" required="no">
+			<description>This pack builds your EAR file as part of the installation. If not selected you must build the EAR file manually upon completion.</description>
+		</pack>
+	</packs>
+</installation>
+

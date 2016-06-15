@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<presentationset id="presentationset">
+	<presentation id="dsplicense" mboname="DSPLICENSE" keyattribute="licensenum"
+		resultstableid="results_showlist" beanclass="biz.gbat.tivoli.gtm.webclient.beans.DSPLicenseAppBean"
+		version="7.5.0.0">
+		<page id="mainrec">
+			<include id="pageHeader" />
+			<clientarea id="clientarea">
+				<tabgroup id="maintabs" style="form">
+					<tab default="true" id="results" label="List" type="list">
+						<menubar event="search" id="actiontoolbar1" sourcemethod="getAppSearchOptions" />
+						<table id="results_showlist" inputmode="readonly" label="DSP Licenses"
+							mboname="DSPLICENSE" selectmode="multiple">
+							<tablebody displayrowsperpage="20" filterable="true"
+								filterexpanded="true" id="results_showlist_tablebody">
+								<tablecol dataattribute="LICENSENUM" filterable="false"
+									id="results_showlist_column_select" mxevent="toggleselectrow"
+									mxevent_desc="Select Row {0}" sortable="false" type="event" />
+								<tablecol dataattribute="LICENSENUM" id="results_showlist_column_link"
+									mxevent="selectrecord" mxevent_desc="Go To %1" type="link"
+									usefieldsizegroup="false" />
+								<tablecol dataattribute="DSPNUM" id="results_showlist_column1" />
+								<tablecol dataattribute="DESCRIPTION" id="results_showlist_column2" />
+								<tablecol dataattribute="ISSUEDATE" id="results_showlist_column3" />
+								<tablecol filterable="false" id="results_bookmark"
+									mxevent="BOOKMARK" mxevent_desc="Add to Bookmarks"
+									mxevent_icon="btn_addtobookmarks.gif" sortable="false" type="event" />
+							</tablebody>
+						</table>
+					</tab>
+					<tab id="main" label="Main" type="insert">
+						<section border="true" id="main_sec1">
+							<sectionrow id="main_sec1_r1">
+								<sectioncol id="main_sec1_c1">
+									<section id="main_sec1_c1_1">
+										<textbox dataattribute="DSPNUM" id="maintab_attr11"
+											inputmode="readonly" />
+										<multiparttextbox dataattribute="licensenum"
+											descdataattribute="description" id="main_sec1_1"
+											longdescription="true" />
+										<textbox dataattribute="ISSUEDATE" id="maintab_attr22"
+											lookup="datelookup" />
+										<textbox dataattribute="MONTHSVALID" id="maintab_attr3" />
+										<textbox dataattribute="EXPDATE" id="main_sec1_2" />
+										<textbox dataattribute="COMPANYID" id="maintab_attr6"
+											lookup="companies" menutype="normal" />
+										<textbox dataattribute="TOTALCOST" id="maintab_attr10" />
+									</section>
+								</sectioncol>
+								<sectioncol id="main_sec1_c2">
+									<section id="main_sec1_c2_1">
+										<textbox dataattribute="DESTINATION" id="maintab_attr4" />
+										<textbox dataattribute="EXITPORT" id="maintab_attr5" />
+										<textbox dataattribute="ENTRYPORT" id="maintab_attr12" />
+										<textbox dataattribute="FIRSTEXITDATE" id="maintab_attr14"
+											lookup="datelookup" />
+										<textbox dataattribute="FINALENTRYDATE" id="maintab_attr15"
+											lookup="datelookup" />
+										<checkbox dataattribute="NEWSHIPMENTS" id="maintab_attr7" />
+									</section>
+								</sectioncol>
+							</sectionrow>
+							<sectionrow id="main_sec1_r2">
+								<sectioncol id="main_sec1_r2_c1">
+									<multilinetextbox dataattribute="REMARKS"
+										id="maintab_attr20" />
+									<table id="maintab_tbl_sojourncountries" label="Countries of Sojourn"
+										relationship="SOJOURNCOUNTRIES">
+										<tablebody displayrowsperpage="5" filterable="false"
+											filterexpanded="false" id="maintab_tbl_sojourncountries_tblbody">
+											<tablecol dataattribute="country" filterable="false"
+												id="maintab_tbl_sojourncountries_col1" />
+										</tablebody>
+									</table>
+								</sectioncol>
+								<sectioncol id="main_sec1_r2_c2">
+									<textbox dataattribute="REFAGREEMENT" id="maintab_attr8" />
+									<textbox dataattribute="COMMODITYFINANCETYPE" id="maintab_attr9" />
+									<textbox dataattribute="REGISTRANTCODE" id="maintab_attr13" />
+									<textbox dataattribute="COMPLIANCEDISCNUM" id="maintab_attr16" />
+								</sectioncol>
+							</sectionrow>
+						</section>
+						<table id="maintab_tbl_relatedlicenses" label="Related Licenses"
+							relationship="RELATEDLICENSES">
+							<tablebody displayrowsperpage="5" filterable="true"
+								filterexpanded="false" id="maintab_tbl_relatedlicenses_tblbody">
+								<tablecol dataattribute="licensenum" filterable="false"
+									id="maintab_tbl_relatedlicenses_col1" menutype="normal"
+									movetoattribute="licensenum" movetoresultset="masterview" />
+								<tablecol dataattribute="dspnum" filterable="false"
+									id="maintab_tbl_relatedlicenses_col2" inputmode="readonly" />
+								<tablecol dataattribute="description" filterable="false"
+									id="maintab_tbl_relatedlicenses_col3" inputmode="readonly" />
+								<tablecol dataattribute="issuedate" filterable="false"
+									id="maintab_tbl_relatedlicenses_col4" inputmode="readonly" />
+								<tablecol dataattribute="expdate" filterable="false"
+									id="maintab_tbl_relatedlicenses_col5" inputmode="readonly" />
+							</tablebody>
+						</table>
+						<table id="maintab_tbl_contactagencies" label="Associated Government Agencies"
+							relationship="CONTACTAGENCIES">
+							<tablebody displayrowsperpage="5" filterable="true"
+								filterexpanded="false" id="maintab_tbl_contactagencies_tblbody">
+								<tablecol dataattribute="agency" filterable="false"
+									id="maintab_tbl_contactagencies_col1" menutype="normal" />
+								<tablecol dataattribute="name" filterable="false"
+									id="maintab_tbl_contactagencies_col2" menutype="normal" />
+								<tablecol dataattribute="telephone" filterable="false"
+									id="maintab_tbl_contactagencies_col3" menutype="normal" />
+							</tablebody>
+						</table>
+					</tab>
+				</tabgroup>
+			</clientarea>
+			<include id="pageFooter" />
+		</page>
+
+		<dialog beanclass="psdi.webclient.system.beans.QbeBean" id="searchmore"
+			inputmode="query" label="More Search Fields">
+			<section id="searchmore_1">
+				<textbox dataattribute="LICENSENUM" id="searchmore_attr1" />
+				<textbox dataattribute="DESCRIPTION" id="searchmore_attr2" />
+				<textbox dataattribute="MONTHSVALID" id="searchmore_attr3" />
+				<textbox dataattribute="DESTINATION" id="searchmore_attr4" />
+				<textbox dataattribute="EXITPORT" id="searchmore_attr5" />
+				<textbox dataattribute="COMPANYID" id="searchmore_attr6" />
+				<checkbox dataattribute="NEWSHIPMENTS" id="searchmore_attr7" />
+				<textbox dataattribute="REFAGREEMENT" id="searchmore_attr8" />
+				<textbox dataattribute="COMMODITYFINANCETYPE" id="searchmore_attr9" />
+				<textbox dataattribute="DSPNUM" id="searchmore_attr11" />
+				<textbox dataattribute="ENTRYPORT" id="searchmore_attr12" />
+				<textbox dataattribute="REGISTRANTCODE" id="searchmore_attr13" />
+				<textbox dataattribute="FIRSTEXITDATE" id="searchmore_attr14"
+					lookup="datelookup" />
+				<textbox dataattribute="FINALENTRYDATE" id="searchmore_attr15"
+					lookup="datelookup" />
+				<textbox dataattribute="COMPLIANCEDISCNUM" id="searchmore_attr16" />
+				<textbox dataattribute="DESCRIPTION_LONGDESCRIPTION" id="searchmore_attr19" />
+				<textbox dataattribute="REMARKS" id="searchmore_attr20" />
+				<textbox dataattribute="ISSUEDATE" id="searchmore_attr22"
+					lookup="datelookup" />
+			</section>
+			<buttongroup id="searchmore_buttongroup">
+				<pushbutton default="true" id="searchmore_buttongroup_1"
+					label="Find" mxevent="dialogok" />
+				<pushbutton id="qbe_restoreappdefault_button" label="Restore Application Defaults"
+					mxevent="qbeclear" />
+				<pushbutton id="qbe_revisebutton" label="Revise"
+					menutype="SEARCHMOREREVISE" targetid="searchmore" />
+				<pushbutton id="searchmore_buttongroup_3" label="Cancel"
+					mxevent="qbecancel" />
+			</buttongroup>
+		</dialog>
+
+		<dialog beanclass="psdi.webclient.system.beans.ViewBookmarksBean"
+			id="searchbook" label="My Bookmarks" mboname="DSPLICENSE">
+			<table id="bookmarks_table" inputmode="readonly" selectmode="single">
+				<tablebody displayrowsperpage="20" filterable="true"
+					id="bookmarks_table_tablebody">
+					<tablecol dataattribute="LICENSENUM" id="bookmarks_tablecolumn_1"
+						mxevent="selectrecord" type="link" />
+					<tablecol dataattribute="description" id="bookmarks_tablecolumn_2" />
+					<tablecol filterable="false" id="bookmarks_tablecolumn_3"
+						mxevent="instantdelete" mxevent_desc="Delete" mxevent_icon="btn_delete.gif"
+						sortable="false" type="event" />
+				</tablebody>
+			</table>
+			<buttongroup id="bookmarks_2">
+				<pushbutton default="true" id="bookmarks_2_1" label="OK"
+					mxevent="dialogok" />
+			</buttongroup>
+		</dialog>
+		<configurationblock id="datastore_configurationblock">
+		</configurationblock>
+	</presentation>
+</presentationset>
